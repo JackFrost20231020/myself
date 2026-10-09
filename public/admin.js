@@ -46,6 +46,7 @@
     if (!el) return;
     el.textContent = text;
     el.classList.toggle("is-error", Boolean(isError));
+    el.classList.toggle("is-saved", !isError && text === "已保存");
     clearTimeout(el._timer);
     if (!isError && text === "已保存") el._timer = setTimeout(() => (el.textContent = ""), 2000);
   }

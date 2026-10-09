@@ -39,6 +39,22 @@ const ADMIN_NAV: [string, string][] = [
   ["/admin/feed", "AI 资讯"],
 ];
 
+const REPO_URL = "https://github.com/JackFrost20231020/myself";
+
+// 标志：仪表圆圈（ISA 符号）里写 KG
+const Logo: FC = () => (
+  <svg class="logo" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+    <circle class="logo-ring" cx="16" cy="16" r="13.5" />
+    <line class="logo-line" x1="2.5" y1="16" x2="29.5" y2="16" />
+    <text class="logo-text" x="16" y="11.2" text-anchor="middle" dominant-baseline="central">
+      KG
+    </text>
+    <circle class="logo-dot" cx="11" cy="22" r="1.9" />
+    <circle class="logo-dot" cx="21" cy="22" r="1.9" />
+    <line class="logo-edge" x1="12.6" y1="22" x2="19.4" y2="22" />
+  </svg>
+);
+
 type LayoutProps = PropsWithChildren<{ site: SiteInfo; title?: string; path: string; authed: boolean; admin?: boolean }>;
 
 export const Layout: FC<LayoutProps> = ({ site, title, path, authed, admin, children }) => (
@@ -48,18 +64,23 @@ export const Layout: FC<LayoutProps> = ({ site, title, path, authed, admin, chil
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="color-scheme" content="light dark" />
         <title>{title ? `${title} · ${site.title}` : site.title}</title>
         <meta name="description" content={site.bio.replace(/\s+/g, " ").slice(0, 120) || site.title} />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="stylesheet" href="/app.css" />
-        {admin ? <script src="/admin.js" defer></script> : null}
+        <script src={admin ? "/admin.js" : "/site.js"} defer></script>
       </head>
-      <body class={admin ? "is-admin" : undefined}>
+      <body class={admin ? "is-admin" : "is-public"}>
+        <a class="skip" href="#main">
+          跳到正文
+        </a>
         <header class="site-header">
           <div class="wrap header-row">
             <a class="brand" href={admin ? "/admin" : "/"}>
-              {site.title}
-              {admin ? <span class="brand-tag">后台</span> : null}
+              <Logo />
+              <span class="brand-name">{site.title}</span>
+              {admin ? <span class="chip chip-accent">后台</span> : null}
             </a>
             <nav class="nav" aria-label={admin ? "后台导航" : "主导航"}>
               {(admin ? ADMIN_NAV : PUBLIC_NAV).map(([href, label]) => (
@@ -81,17 +102,28 @@ export const Layout: FC<LayoutProps> = ({ site, title, path, authed, admin, chil
               </div>
             ) : authed ? (
               <div class="header-actions">
-                <a href="/admin">进后台</a>
+                <a class="button-small" href="/admin">
+                  进后台
+                </a>
               </div>
             ) : null}
           </div>
         </header>
-        <main class="wrap">{children}</main>
+        <main class="wrap main" id="main">
+          {children}
+        </main>
         <footer class="site-footer">
-          <div class="wrap">
-            {admin
-              ? "改动会立即生效，每次改动都记在「修改历史」里，可以撤销。"
-              : "这个主页由我自己维护，内容会随学习进度随时更新。"}
+          <div class="wrap footer-row">
+            <span>
+              {admin
+                ? "改动会立即生效。每次改动都记在「修改历史」里，可以撤销。"
+                : "学习图纸 · 内容随学习进度实时更新"}
+            </span>
+            {admin ? null : (
+              <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
+                源代码
+              </a>
+            )}
           </div>
         </footer>
       </body>

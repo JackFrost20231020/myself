@@ -20,7 +20,10 @@
 - 数据库结构改动：在 `migrations/` 新增编号递增的 SQL 文件，不要改已有的迁移。
 - 所有内容都在 `entries` 表，用 `kind` 区分；类型特有字段在 `data`（JSON），字段校验在 `src/kinds.ts`。
 - 内容的增删改只能走 `src/store.ts` 的函数，它们负责写修改历史；不要绕过。
-- 页面有内容安全策略（CSP）：不能写行内脚本和 `style` 属性，脚本放 `public/`，样式写进 `public/app.css`。
+- 页面有内容安全策略（CSP）：不能写行内脚本和 `style` 属性，脚本放 `public/`，样式写进 `public/app.css`。需要动态数值时，服务端写成 SVG 属性，或在 JS 里用 `el.style.xxx =`（CSSOM 不受限制）。
+- 视觉风格是「学习图纸」：工程图纸（标题栏、仪表圆圈、管道、信号虚线、网格底纹）加知识图谱。颜色都是 `public/app.css` 顶部的变量，深色模式只替换变量。
+- 共用组件在 `src/views/components.tsx`（进度环、P&ID 流程线、卡片、时间线、图谱面板）；首页图谱的数据由 `src/graph.ts` 只用公开内容生成，嵌在页面里。
+- 公开页的交互和动画在 `public/site.js`（力导向图谱、进度动画、论文筛选），后台的在 `public/admin.js`。动画要照顾系统的「减少动态效果」设置；进度类动画用 Web Animations，元素本身始终保持最终值。
 - AIHOT 的内容只能在后台显示，条款不允许未经授权公开转载。
 
 ## 密钥
