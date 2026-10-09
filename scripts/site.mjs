@@ -61,15 +61,26 @@ function dataFromFlags(flags) {
   return data;
 }
 
+// 这些错误发生在请求发出之前，重试不会重复执行修改。
+const NOT_SENT = new Set(["UND_ERR_CONNECT_TIMEOUT", "ECONNREFUSED", "ENOTFOUND", "EAI_AGAIN"]);
+
 async function call(method, path, body) {
   const headers = { accept: "application/json", "x-actor": ACTOR };
   if (TOKEN) headers.authorization = `Bearer ${TOKEN}`;
   if (body !== undefined) headers["content-type"] = "application/json";
   let res;
-  try {
-    res = await fetch(SITE_URL + path, { method, headers, body: body === undefined ? undefined : JSON.stringify(body) });
-  } catch (err) {
-    throw new Error(`连不上 ${SITE_URL}（${err.cause?.code ?? err.message}）。本地开发要先运行 npm run dev。`);
+  for (let attempt = 1; ; attempt++) {
+    try {
+      res = await fetch(SITE_URL + path, { method, headers, body: body === undefined ? undefined : JSON.stringify(body) });
+      break;
+    } catch (err) {
+      const code = err.cause?.code ?? err.message;
+      const retryable = NOT_SENT.has(code) || method === "GET";
+      if (!retryable || attempt >= 3) {
+        throw new Error(`连不上 ${SITE_URL}（${code}）。网络慢可以再试一次；本地开发要先运行 npm run dev。`);
+      }
+      await new Promise((resolve) => setTimeout(resolve, 1500 * attempt));
+    }
   }
   const json = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(json.error || `请求失败（${res.status}）`);
