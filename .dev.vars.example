@@ -1,0 +1,7 @@
+# 复制成 .dev.vars 用于本地开发；线上环境用 `npx wrangler secret put <名字>` 设置，不要写进代码仓库。
+# 后台登录密码，至少 12 位
+ADMIN_PASSWORD=换成你自己的长密码
+# 给 Claude 和命令行工具用的令牌，随机长字符串
+API_TOKEN=换成一串随机字符
+# 签名登录状态用的密钥，随机长字符串
+SESSION_SECRET=换成另一串随机字符

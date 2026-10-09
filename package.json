@@ -1,0 +1,33 @@
+{
+  "name": "zhishitupu-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "个人学习主页：学习计划、论文笔记、研究问题、开发日志，可在线编辑、有修改历史、可撤销",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "cf-typegen": "wrangler types",
+    "db:migrate:local": "wrangler d1 migrations apply DB --local",
+    "db:migrate:remote": "wrangler d1 migrations apply DB --remote",
+    "db:seed:local": "node scripts/build-seed.mjs && wrangler d1 execute DB --local --file seed/seed.sql",
+    "db:seed:remote": "node scripts/build-seed.mjs && wrangler d1 execute DB --remote --file seed/seed.sql",
+    "site": "node scripts/site.mjs"
+  },
+  "dependencies": {
+    "hono": "^4.13.13",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3",
+    "wrangler": "^4.148.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true,
+    "workerd@1.20260815.1": true,
+    "workerd@1.20261006.1": true
+  }
+}

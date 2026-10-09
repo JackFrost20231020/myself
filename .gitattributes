@@ -1,0 +1,2 @@
+# 仓库里统一用 LF 换行，避免 Windows 上的换行符反复变动
+* text=auto eol=lf

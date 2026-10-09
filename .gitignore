@@ -1,0 +1,25 @@
+# 依赖和本地运行产物
+node_modules/
+.wrangler/
+dist/
+
+# 由 scripts/build-seed.mjs 生成
+seed/seed.sql
+
+# 密钥：绝不提交
+.dev.vars
+.env
+.env.*
+!.env.example
+
+# /teach 的个人学习文件夹，默认不公开
+learn/
+
+# 本机的预览配置（含本机路径）
+.claude/launch.json
+
+# 编辑器和系统文件
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
