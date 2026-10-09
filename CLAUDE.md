@@ -29,3 +29,17 @@
 ## 密钥
 
 `.dev.vars`、`.env.local` 已被 Git 忽略，里面的值不要写进代码、文档或对话。线上密钥用 `npx wrangler secret put`，由用户自己输入。
+
+## Agent skills
+
+### Issue tracker
+
+issue 记在本仓库的 GitHub Issues，用 `gh` 命令行操作。仓库是公开的，issue 也公开。见 `docs/agents/issue-tracker.md`。
+
+### Triage labels
+
+五个分类标签用中文名：待分类、待补充、交给智能体、需要人工、不做。见 `docs/agents/triage-labels.md`。
+
+### Domain docs
+
+单一布局：根目录一个 `CONTEXT.md`，决策记录放在 `docs/adr/`。见 `docs/agents/domain.md`。
