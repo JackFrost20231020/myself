@@ -9,8 +9,8 @@
     {
       "binding": "DB",
       "database_name": "zhishitupu-site",
-      // 部署前运行 `npx wrangler d1 create zhishitupu-site`，把输出的 database_id 填到这里
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      // 由 `npx wrangler d1 create zhishitupu-site` 创建；换账号部署时要换成新的 database_id
+      "database_id": "4e764a78-5c15-4399-b849-de5e65fb4efe",
       "migrations_dir": "migrations"
     }
   ],
