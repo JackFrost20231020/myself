@@ -78,6 +78,8 @@
     about: { rest: 72, k: 0.3 },
   };
   const ALPHA_MIN = 0.003;
+  // 流动小点和本周光圈只在打开后、每次互动后动这么久，然后停下来，不一直占用 CPU
+  const AMBIENT_MS = 8000;
 
   function initGraph() {
     const stage = document.querySelector("[data-graph]");
@@ -137,6 +139,8 @@
     let down = null;
     let raf = 0;
     let lastDraw = 0;
+    let ambientUntil = 0;
+    let moving = false;
     let visible = true;
     let C = {};
     let font = "sans-serif";
@@ -301,7 +305,7 @@
       ctx.lineWidth = 2;
       if (n.kind === "week") {
         const stroke = n.state === "current" ? C.signal : n.state === "done" ? C.accent : C.muted;
-        if (n.state === "current" && !reduce) {
+        if (n.state === "current" && moving) {
           const phase = (now % 2400) / 2400;
           ctx.save();
           ctx.globalAlpha *= 0.55 * (1 - phase);
@@ -387,6 +391,7 @@
     }
 
     function draw(now = performance.now()) {
+      moving = !reduce && now < ambientUntil;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
       const focus = hover ? neighbors.get(hover.id) : null;
@@ -413,7 +418,7 @@
             ctx.moveTo(e.s.x, e.s.y);
             ctx.lineTo(e.t.x, e.t.y);
             ctx.stroke();
-            if (!reduce) {
+            if (moving) {
               // 管道里的流动：三个小点沿着主干往前走
               ctx.fillStyle = C.accent2;
               for (let k = 0; k < 3; k++) {
@@ -432,12 +437,12 @@
           ctx.lineWidth = 1;
           ctx.strokeStyle = focus && on ? C.ink2 : C.muted;
           ctx.setLineDash([3, 4]);
-          if (focus && on && !reduce) ctx.lineDashOffset = -(now / 60) % 14;
+          if (focus && on && moving) ctx.lineDashOffset = -(now / 60) % 14;
           ctx.stroke();
           ctx.setLineDash([]);
           ctx.lineDashOffset = 0;
           // 「我」正在做的这一周：从我流向本周
-          if (e.s.kind === "me" && e.t.state === "current" && !reduce) {
+          if (e.s.kind === "me" && e.t.state === "current" && moving) {
             ctx.fillStyle = C.signal;
             for (let k = 0; k < 2; k++) {
               const f = ((now / 1800 + k / 2) % 1 + 1) % 1;
@@ -475,6 +480,11 @@
       if (!visible || document.hidden) return;
       const active = alpha > ALPHA_MIN || dragging;
       if (active) tick();
+      if (!active && now >= ambientUntil) {
+        // 布局停稳、流动也到时间了：画一帧静止的图，停止循环
+        draw(now);
+        return;
+      }
       if (active || now - lastDraw > 33) draw(now);
       raf = requestAnimationFrame(loop);
     }
@@ -484,6 +494,7 @@
         draw();
         return;
       }
+      ambientUntil = Math.max(ambientUntil, performance.now() + AMBIENT_MS);
       if (!raf) raf = requestAnimationFrame(loop);
     }
 
@@ -563,7 +574,7 @@
       hover = n;
       showTip(n);
       canvas.style.cursor = dragging ? "grabbing" : n ? (n.href ? "pointer" : "grab") : "default";
-      if (reduce) draw();
+      start();
     }
 
     canvas.addEventListener("pointerdown", (e) => {

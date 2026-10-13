@@ -145,6 +145,18 @@ async function loadModel(c: Context<AppEnv>) {
   return { site, entries, model: buildModel(entries, today) };
 }
 
+// 还没有公开内容的栏目：导航里先不显示，免得点进去是空页面
+function emptyNav(model: Model): string[] {
+  const counts: [string, number][] = [
+    ["/plan", model.weeks.length],
+    ["/papers", model.papers.length],
+    ["/questions", model.questions.length],
+    ["/log", model.logs.length],
+    ["/learn", model.learns.length],
+  ];
+  return counts.filter(([, n]) => n === 0).map(([href]) => href);
+}
+
 const STATE_CHIP: Record<WeekState, { tone: Tone; text: string }> = {
   current: { tone: "signal", text: "本周" },
   done: { tone: "accent", text: "已过" },
@@ -166,7 +178,7 @@ pages.get("/", async (c) => {
   const currentPipe = model.pipe.find((p) => p.state === "current");
 
   return c.html(
-    <Layout site={site} path="/" authed={c.get("authed")}>
+    <Layout site={site} path="/" authed={c.get("authed")} hiddenNav={emptyNav(model)}>
       <section class="hero">
         <div class="panel frame hero-intro reveal">
           <p class="eyebrow">
@@ -314,7 +326,7 @@ const LogList: FC<{ entries: Entry[] }> = ({ entries }) => (
 pages.get("/plan", async (c) => {
   const { site, model } = await loadModel(c);
   return c.html(
-    <Layout site={site} title="计划" path="/plan" authed={c.get("authed")}>
+    <Layout site={site} title="计划" path="/plan" authed={c.get("authed")} hiddenNav={emptyNav(model)}>
       <header class="page-head reveal">
         <p class="eyebrow">
           共 {model.weeks.length} 周 · 完成 {model.tasksDone}/{model.tasksTotal} 项任务
@@ -375,7 +387,7 @@ pages.get("/papers", async (c) => {
   const { site, model } = await loadModel(c);
   const count = (s: string) => model.papers.filter((p) => String(p.data.status ?? "shelf") === s).length;
   return c.html(
-    <Layout site={site} title="论文" path="/papers" authed={c.get("authed")}>
+    <Layout site={site} title="论文" path="/papers" authed={c.get("authed")} hiddenNav={emptyNav(model)}>
       <header class="page-head reveal">
         <p class="eyebrow">
           {model.papers.length} 篇 · 在读 {count("reading")} · 读完 {count("done")}
@@ -415,7 +427,7 @@ const QUESTION_TONE: Record<string, Tone> = { want: "signal", open: "muted", dis
 pages.get("/questions", async (c) => {
   const { site, model } = await loadModel(c);
   return c.html(
-    <Layout site={site} title="研究问题" path="/questions" authed={c.get("authed")}>
+    <Layout site={site} title="研究问题" path="/questions" authed={c.get("authed")} hiddenNav={emptyNav(model)}>
       <header class="page-head reveal">
         <p class="eyebrow">{model.questions.length} 个问题</p>
         <h1>研究问题</h1>
@@ -451,7 +463,7 @@ function timelinePage(kind: Extract<ListKind, "devlog" | "learn">, intro: string
     const meta = KIND_META[kind];
     const entries = kind === "devlog" ? model.logs : model.learns;
     return c.html(
-      <Layout site={site} title={meta.plural} path={`/${meta.path}`} authed={c.get("authed")}>
+      <Layout site={site} title={meta.plural} path={`/${meta.path}`} authed={c.get("authed")} hiddenNav={emptyNav(model)}>
         <header class="page-head reveal">
           <p class="eyebrow">{entries.length} 条</p>
           <h1>{meta.plural}</h1>
@@ -482,3 +494,23 @@ function timelinePage(kind: Extract<ListKind, "devlog" | "learn">, intro: string
 
 pages.get("/log", timelinePage("devlog", "做项目时每周的进展、遇到的问题和解决办法。"));
 pages.get("/learn", timelinePage("learn", "系统学习一个主题时留下的记录。"));
+
+// ---------- 找不到页面 ----------
+
+export async function renderNotFound(c: Context<AppEnv>) {
+  const { site, model } = await loadModel(c);
+  return c.html(
+    <Layout site={site} title="找不到页面" path={c.req.path} authed={c.get("authed")} hiddenNav={emptyNav(model)}>
+      <header class="page-head reveal">
+        <p class="eyebrow">404</p>
+        <h1>找不到这个页面</h1>
+        <p class="lede">地址可能写错了，或者这条内容已经删除、改成了私密。</p>
+      </header>
+      <a class="more" href="/">
+        回主页
+        <span aria-hidden="true">→</span>
+      </a>
+    </Layout>,
+    404,
+  );
+}

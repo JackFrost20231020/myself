@@ -155,6 +155,38 @@ describe("公开页面", () => {
     expect(res.headers.get("content-security-policy")).toContain("default-src 'self'");
   });
 
+  it("没有公开内容的栏目不放进导航", async () => {
+    const navOf = async () => {
+      const html = await (await app.request("/", {}, env)).text();
+      return /<nav class="nav"[^>]*>([\s\S]*?)<\/nav>/.exec(html)?.[1] ?? "";
+    };
+    const before = await navOf();
+    expect(before).toContain('href="/plan"');
+    expect(before).not.toContain('href="/questions"');
+    expect(before).not.toContain('href="/log"');
+
+    await createEntry(db, { kind: "question", title: "公开的问题", visibility: "public" }, "seed");
+    expect(await navOf()).toContain('href="/questions"');
+  });
+
+  it("空栏目直接打开时仍能访问，导航里标出当前页", async () => {
+    const res = await app.request("/questions", {}, env);
+    expect(res.status).toBe(200);
+    expect(await res.text()).toContain('href="/questions" aria-current="page"');
+  });
+
+  it("找不到的页面返回 404，页面上有回主页的链接；接口返回 JSON", async () => {
+    const page = await app.request("/no-such-page", {}, env);
+    expect(page.status).toBe(404);
+    const html = await page.text();
+    expect(html).toContain("找不到这个页面");
+    expect(html).toContain('href="/"');
+
+    const apiRes = await app.request("/api/no-such-thing", {}, env);
+    expect(apiRes.status).toBe(404);
+    expect(((await apiRes.json()) as { error: string }).error).toBeTruthy();
+  });
+
   it("登录后的后台概览能打开", async () => {
     const cookie = (await login()).headers.get("set-cookie")?.split(";")[0];
     const res = await app.request("/admin", { headers: { cookie: cookie! } }, env);

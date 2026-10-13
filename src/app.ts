@@ -7,7 +7,7 @@ import { identify } from "./auth";
 import type { AppEnv } from "./env";
 import { session } from "./session";
 import { admin } from "./views/admin";
-import { pages } from "./views/public";
+import { pages, renderNotFound } from "./views/public";
 
 export const app = new Hono<AppEnv>();
 
@@ -42,7 +42,9 @@ app.route("/admin", session);
 app.route("/admin", admin);
 app.route("/", pages);
 
-app.notFound((c) => c.html('<!DOCTYPE html><meta charset="utf-8"><title>找不到页面</title><p>找不到这个页面。<a href="/">回主页</a></p>', 404));
+app.notFound((c) =>
+  c.req.path.startsWith("/api/") ? c.json({ error: "找不到这个接口" }, 404) : renderNotFound(c),
+);
 
 app.onError((err, c) => {
   // 中间件主动拒绝的请求（比如 CSRF 检查不通过）保留原来的状态码

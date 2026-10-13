@@ -186,7 +186,8 @@ code, pre { font-family: var(--font-mono); font-size: 0.92em; }
 .button-small:hover { background: var(--accent); color: var(--accent-ink); }
 
 .site-footer { margin-top: 56px; border-top: 1px solid var(--rule); background: var(--paper); }
-.footer-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-block: 18px 34px; font-size: 13px; color: var(--muted); }
+.footer-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; padding-block: 18px 34px; font-size: 13px; color: var(--muted); }
+.footer-row a { display: inline-flex; align-items: center; min-height: 32px; }
 
 /* ---------- 面板、图框角标、标签 ---------- */
 
@@ -207,7 +208,7 @@ code, pre { font-family: var(--font-mono); font-size: 0.92em; }
 .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
 .section-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
 .section-note { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
-.more { display: inline-flex; gap: 6px; font-size: 14px; white-space: nowrap; text-decoration: none; }
+.more { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; white-space: nowrap; text-decoration: none; min-height: 32px; }
 .more span { transition: transform 0.25s var(--ease); }
 .more:hover span { transform: translateX(4px); }
 .panel > .section-head { margin-bottom: 12px; }
@@ -217,7 +218,8 @@ code, pre { font-family: var(--font-mono); font-size: 0.92em; }
 .card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 45%, var(--rule)); }
 .card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .card-title { font-size: 15.5px; line-height: 1.45; overflow-wrap: anywhere; }
-.card-title a { color: var(--ink); text-decoration: none; background-image: linear-gradient(var(--accent), var(--accent)); background-size: 0 1.5px; background-position: 0 100%; background-repeat: no-repeat; transition: background-size 0.3s var(--ease), color 0.2s; }
+/* 上下内边距只扩大点击区域（行内元素不影响排版），下划线仍贴着文字 */
+.card-title a { color: var(--ink); text-decoration: none; padding-block: 4px; background-image: linear-gradient(var(--accent), var(--accent)); background-size: 0 1.5px; background-position: 0 100%; background-origin: content-box; background-repeat: no-repeat; transition: background-size 0.3s var(--ease), color 0.2s; }
 .card-title a:hover { color: var(--accent); background-size: 100% 1.5px; }
 .card-meta { font-size: 13px; color: var(--muted); }
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); gap: 14px; }
