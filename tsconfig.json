@@ -10,8 +10,9 @@
     "noEmit": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx"
   },
-  "include": ["src", "test", "worker-configuration.d.ts"]
+  "include": ["src", "test", "web/content", "worker-configuration.d.ts"]
 }

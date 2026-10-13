@@ -5,7 +5,7 @@ export default defineConfig({
   oxc: { jsx: { runtime: "automatic", importSource: "hono/jsx" } },
   test: {
     environment: "node",
-    include: ["test/**/*.test.ts"],
+    include: ["test/**/*.test.ts", "web/**/*.test.ts"],
     testTimeout: 30_000,
     hookTimeout: 120_000,
   },

@@ -1,0 +1,81 @@
+# 计划：按周排，每次只细排接下来四周。格式见 content/README.md。
+weeks:
+  - id: w0
+    title: "准备周"
+    start: "2026-10-08"
+    end: "2026-10-11"
+    tasks:
+      - id: w0-1
+        title: "在 PaperDance 用一句话写下研究兴趣，然后刷 10 分钟"
+        done: false
+      - id: w0-2
+        title: "安装 Matt Pocock 的 skills"
+        done: true
+      - id: w0-3
+        title: "新建一个学习文件夹，在里面运行 /teach，开始学 Neo4j 和 Cypher"
+        done: false
+      - id: w0-4
+        title: "向组里要一份图谱导入文件的样例，问清现有代码在哪"
+        done: false
+  - id: w1
+    title: "Neo4j 入门"
+    start: "2026-10-12"
+    end: "2026-10-18"
+    tasks:
+      - id: w1-1
+        title: "/teach 两节课：属性图模型；Cypher 的增删改查"
+        done: false
+      - id: w1-2
+        title: "在本地装好 Neo4j，把样例文件导进去，只导 10 个节点也算"
+        done: false
+      - id: w1-3
+        title: "精读组里的 KA-RAG，弄清现有系统怎么用图谱"
+        done: false
+  - id: w2
+    title: "想清楚任务 1"
+    start: "2026-10-19"
+    end: "2026-10-25"
+    tasks:
+      - id: w2-1
+        title: "写一页任务 1 设计草稿：节点用什么做唯一 ID、导入批次怎么记、审计表有哪些字段"
+        done: false
+      - id: w2-2
+        title: "用 /grill-me 让 Claude 追问这份草稿，问到每个问题都有答案；改好后给组里看"
+        done: false
+      - id: w2-3
+        title: "/teach 一节：MERGE 和 CREATE 的区别、事务、唯一约束"
+        done: false
+      - id: w2-4
+        title: "精读 ReAct"
+        done: false
+  - id: w3
+    title: "上传与导入"
+    start: "2026-10-26"
+    end: "2026-11-01"
+    tasks:
+      - id: w3-1
+        title: "实现浏览器上传 → 写入 Neo4j，先不做审计"
+        done: false
+      - id: w3-2
+        title: "用 /tdd 给导入函数写 3 个测试：重复导入不产生重复节点、坏文件给出明确报错、空文件不让程序崩溃"
+        done: false
+      - id: w3-3
+        title: "精读 RAG 综述的前三节"
+        done: false
+  - id: w4
+    title: "审计 + 第一次月度复盘"
+    start: "2026-11-02"
+    end: "2026-11-08"
+    tasks:
+      - id: w4-1
+        title: "每次导入写一条审计记录：谁、什么时候、哪个文件、导入了多少节点和边"
+        done: false
+      - id: w4-2
+        title: "在组会上或找师兄师姐，用 5 分钟讲清 KA-RAG 或 ReAct"
+        done: false
+      - id: w4-3
+        title: "精读大模型与知识图谱路线图，只看框架图和前两节"
+        done: false
+      - id: w4-4
+        title: "月度复盘：翻一遍周记和 /teach 的学习记录，让 Claude 排下一个四周"
+        done: false

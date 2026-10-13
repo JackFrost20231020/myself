@@ -1,0 +1,49 @@
+# 书架：在读、想读和读完的论文。格式见 content/README.md。
+papers:
+  - id: p-karag
+    title: "KA-RAG: Integrating Knowledge Graphs and Agentic Retrieval-Augmented Generation for an Intelligent Educational Question-Answering Model"
+    status: 想读
+    venue: "Applied Sciences 2025 · 组内工作"
+    week: "第 1 周"
+  - id: p-react
+    title: "ReAct: Synergizing Reasoning and Acting in Language Models"
+    status: 想读
+    venue: "ICLR 2023"
+    url: "https://arxiv.org/abs/2210.03629"
+    week: "第 2 周"
+  - id: p-rag-survey
+    title: "Retrieval-Augmented Generation for Large Language Models: A Survey"
+    status: 想读
+    venue: "arXiv 2023"
+    url: "https://arxiv.org/abs/2312.10997"
+    week: "第 3 周"
+  - id: p-llm-kg
+    title: "Unifying Large Language Models and Knowledge Graphs: A Roadmap"
+    status: 想读
+    venue: "IEEE TKDE 2024"
+    url: "https://arxiv.org/abs/2306.08302"
+    week: "第 4 周"
+  - id: p-effective-agents
+    title: "Building Effective Agents"
+    status: 想读
+    venue: "Anthropic 2024"
+    url: "https://www.anthropic.com/engineering/building-effective-agents"
+    week: "第 5 周"
+  - id: p-graphrag
+    title: "From Local to Global: A Graph RAG Approach to Query-Focused Summarization"
+    status: 想读
+    venue: "Microsoft 2024"
+    url: "https://arxiv.org/abs/2404.16130"
+    week: "第 6 周"
+  - id: p-text2cypher
+    title: "Text2Cypher: Bridging Natural Language and Graph Databases"
+    status: 想读
+    venue: "Neo4j 2024"
+    url: "https://arxiv.org/abs/2412.10064"
+    week: "第 7 周"
+  - id: p-pid-reasoning
+    title: "Grounded and Faithful P&ID Reasoning: Constraining Vision-Language Models with Recovered Evidence Graphs"
+    status: 想读
+    venue: "arXiv 2026"
+    url: "https://arxiv.org/abs/2609.05880"
+    week: "第 8 周"

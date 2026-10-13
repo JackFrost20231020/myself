@@ -15,6 +15,9 @@ seed/seed.sql
 # /teach 的个人学习文件夹，默认不公开
 learn/
 
+# 私密内容（周记、草稿、私密的研究问题）：只在本机，永远不提交
+private/
+
 # 本机的预览配置（含本机路径）
 .claude/launch.json
 
