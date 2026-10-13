@@ -15,6 +15,7 @@
 ## 开发
 
 - Node.js 在 `E:\Program Files\nodejs`；新开的终端如果找不到 node，先把这个目录加进 PATH。
+- GitHub 命令行 gh 在 `E:\Program Files\GitHub CLI`，找不到时同样加进 PATH。登录（`gh auth login`）由用户自己做。
 - `npm run dev` 本地运行；`npm test` 测试（vitest + wrangler 的 getPlatformProxy，跑真实的本地 D1）；`npm run typecheck` 类型检查。
 - 改了 `wrangler.jsonc` 后运行 `npx wrangler types` 重新生成 `worker-configuration.d.ts`。
 - 数据库结构改动：在 `migrations/` 新增编号递增的 SQL 文件，不要改已有的迁移。
