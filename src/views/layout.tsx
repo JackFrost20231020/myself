@@ -55,81 +55,98 @@ const Logo: FC = () => (
   </svg>
 );
 
-type LayoutProps = PropsWithChildren<{ site: SiteInfo; title?: string; path: string; authed: boolean; admin?: boolean }>;
+type LayoutProps = PropsWithChildren<{
+  site: SiteInfo;
+  title?: string;
+  path: string;
+  authed: boolean;
+  admin?: boolean;
+  // 还没有公开内容的栏目，先不放进导航（当前所在的页面除外）
+  hiddenNav?: string[];
+}>;
 
-export const Layout: FC<LayoutProps> = ({ site, title, path, authed, admin, children }) => (
-  <>
-    {raw("<!DOCTYPE html>")}
-    <html lang="zh-CN">
-      <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="color-scheme" content="light dark" />
-        <title>{title ? `${title} · ${site.title}` : site.title}</title>
-        <meta name="description" content={site.bio.replace(/\s+/g, " ").slice(0, 120) || site.title} />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="stylesheet" href="/app.css" />
-        <script src={admin ? "/admin.js" : "/site.js"} defer></script>
-      </head>
-      <body class={admin ? "is-admin" : "is-public"}>
-        <a class="skip" href="#main">
-          跳到正文
-        </a>
-        <header class="site-header">
-          <div class="wrap header-row">
-            <a class="brand" href={admin ? "/admin" : "/"}>
-              <Logo />
-              <span class="brand-name">{site.title}</span>
-              {admin ? <span class="chip chip-accent">后台</span> : null}
-            </a>
-            <nav class="nav" aria-label={admin ? "后台导航" : "主导航"}>
-              {(admin ? ADMIN_NAV : PUBLIC_NAV).map(([href, label]) => (
-                <a href={href} aria-current={path === href ? "page" : undefined}>
-                  {label}
-                </a>
-              ))}
-            </nav>
-            {admin ? (
-              <div class="header-actions">
-                <a href="/" target="_blank" rel="noopener">
-                  看公开页
-                </a>
-                <form method="post" action="/admin/logout">
-                  <button type="submit" class="link-button">
-                    退出
-                  </button>
-                </form>
-              </div>
-            ) : authed ? (
-              <div class="header-actions">
-                <a class="button-small" href="/admin">
-                  进后台
-                </a>
-              </div>
-            ) : null}
-          </div>
-        </header>
-        <main class="wrap main" id="main">
-          {children}
-        </main>
-        <footer class="site-footer">
-          <div class="wrap footer-row">
-            <span>
-              {admin
-                ? "改动会立即生效。每次改动都记在「修改历史」里，可以撤销。"
-                : "学习图纸 · 内容随学习进度实时更新"}
-            </span>
-            {admin ? null : (
-              <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
-                源代码
+export const Layout: FC<LayoutProps> = ({ site, title, path, authed, admin, hiddenNav = [], children }) => {
+  const fullTitle = title ? `${title} · ${site.title}` : site.title;
+  const description = site.bio.replace(/\s+/g, " ").slice(0, 120) || site.title;
+  const nav = admin ? ADMIN_NAV : PUBLIC_NAV.filter(([href]) => href === path || !hiddenNav.includes(href));
+  return (
+    <>
+      {raw("<!DOCTYPE html>")}
+      <html lang="zh-CN">
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="color-scheme" content="light dark" />
+          <title>{fullTitle}</title>
+          <meta name="description" content={description} />
+          <meta property="og:type" content="website" />
+          <meta property="og:site_name" content={site.title} />
+          <meta property="og:title" content={fullTitle} />
+          <meta property="og:description" content={description} />
+          <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+          <link rel="stylesheet" href="/app.css" />
+          <script src={admin ? "/admin.js" : "/site.js"} defer></script>
+        </head>
+        <body class={admin ? "is-admin" : "is-public"}>
+          <a class="skip" href="#main">
+            跳到正文
+          </a>
+          <header class="site-header">
+            <div class="wrap header-row">
+              <a class="brand" href={admin ? "/admin" : "/"}>
+                <Logo />
+                <span class="brand-name">{site.title}</span>
+                {admin ? <span class="chip chip-accent">后台</span> : null}
               </a>
-            )}
-          </div>
-        </footer>
-      </body>
-    </html>
-  </>
-);
+              <nav class="nav" aria-label={admin ? "后台导航" : "主导航"}>
+                {nav.map(([href, label]) => (
+                  <a href={href} aria-current={path === href ? "page" : undefined}>
+                    {label}
+                  </a>
+                ))}
+              </nav>
+              {admin ? (
+                <div class="header-actions">
+                  <a href="/" target="_blank" rel="noopener">
+                    看公开页
+                  </a>
+                  <form method="post" action="/admin/logout">
+                    <button type="submit" class="link-button">
+                      退出
+                    </button>
+                  </form>
+                </div>
+              ) : authed ? (
+                <div class="header-actions">
+                  <a class="button-small" href="/admin">
+                    进后台
+                  </a>
+                </div>
+              ) : null}
+            </div>
+          </header>
+          <main class="wrap main" id="main">
+            {children}
+          </main>
+          <footer class="site-footer">
+            <div class="wrap footer-row">
+              <span>
+                {admin
+                  ? "改动会立即生效。每次改动都记在「修改历史」里，可以撤销。"
+                  : "学习图纸 · 内容随学习进度实时更新"}
+              </span>
+              {admin ? null : (
+                <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
+                  源代码
+                </a>
+              )}
+            </div>
+          </footer>
+        </body>
+      </html>
+    </>
+  );
+};
 
 export const Markdown: FC<{ text: string }> = ({ text }) =>
   text.trim() ? <div class="md">{raw(renderMarkdown(text))}</div> : null;
