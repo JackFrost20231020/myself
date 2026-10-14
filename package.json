@@ -1,30 +1,25 @@
 {
-  "name": "zhishitupu-site",
-  "version": "0.1.0",
+  "name": "shuang",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "个人学习主页：学习计划、论文笔记、研究问题、开发日志，可在线编辑、有修改历史、可撤销",
+  "description": "「霜」：JackFrost 的方格本。这周在做什么、读了什么、想到了什么",
+  "engines": {
+    "node": ">=22.18"
+  },
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
-    "test": "vitest run && vitest run --config web/vite.config.ts",
-    "check:content": "node web/content/check.ts",
-    "dev:web": "vite --config web/vite.config.ts",
+    "dev": "vite --config web/vite.config.ts",
     "build": "vite build --config web/vite.config.ts",
-    "typecheck": "tsc --noEmit && tsc -p web --noEmit",
-    "cf-typegen": "wrangler types",
-    "db:migrate:local": "wrangler d1 migrations apply DB --local",
-    "db:migrate:remote": "wrangler d1 migrations apply DB --remote",
-    "db:seed:local": "node scripts/build-seed.mjs && wrangler d1 execute DB --local --file seed/seed.sql",
-    "db:seed:remote": "node scripts/build-seed.mjs && wrangler d1 execute DB --remote --file seed/seed.sql",
-    "site": "node scripts/site.mjs"
+    "preview": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler deploy",
+    "test": "vitest run --config web/vite.config.ts",
+    "typecheck": "tsc -p web --noEmit",
+    "check:content": "node web/content/check.ts"
   },
   "dependencies": {
-    "hono": "^4.13.13",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "react-router": "^8.4.0",
-    "zod": "^4.6.5"
+    "react-router": "^8.4.0"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
@@ -35,7 +30,8 @@
     "vite": "^8.3.4",
     "vitest": "^5.0.3",
     "wrangler": "^4.148.0",
-    "yaml": "^2.9.1"
+    "yaml": "^2.9.1",
+    "zod": "^4.6.5"
   },
   "allowScripts": {
     "esbuild@0.28.1": true,

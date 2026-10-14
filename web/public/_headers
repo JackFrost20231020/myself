@@ -1,0 +1,9 @@
+# 带内容哈希的文件（JS、CSS）：文件名变了才会变，浏览器缓存一年
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 所有页面：安全响应头。页面本身（index.html）用默认缓存，每次都会确认有没有新版本。
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

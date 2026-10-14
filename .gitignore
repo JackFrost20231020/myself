@@ -3,9 +3,6 @@ node_modules/
 .wrangler/
 dist/
 
-# 由 scripts/build-seed.mjs 生成
-seed/seed.sql
-
 # 密钥：绝不提交
 .dev.vars
 .env

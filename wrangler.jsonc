@@ -1,20 +1,13 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "zhishitupu-site",
-  "main": "src/index.ts",
   "compatibility_date": "2026-10-01",
-  // public/ 里的静态文件（CSS、JS、图标）由 Cloudflare 直接返回，其余请求交给 Worker
-  "assets": { "directory": "./public" },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "zhishitupu-site",
-      // 由 `npx wrangler d1 create zhishitupu-site` 创建；换账号部署时要换成新的 database_id
-      "database_id": "4e764a78-5c15-4399-b849-de5e65fb4efe",
-      "migrations_dir": "migrations"
-    }
-  ],
-  // 每天 00:30 UTC（北京时间 08:30）拉一次 AIHOT 精选
-  "triggers": { "crons": ["30 0 * * *"] },
-  "observability": { "enabled": true }
+  // 只托管 npm run build 生成的静态文件，没有服务端代码。
+  // 不存在的地址也返回 index.html，由页面自己决定显示哪一页或 404。
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  },
+  // 清掉旧站每天拉 AIHOT 的定时任务
+  "triggers": { "crons": [] }
 }
