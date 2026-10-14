@@ -1,12 +1,10 @@
 // 内容文件的格式。字段名用英文，值用中文；每个对象都是严格的，多写或拼错字段会直接报错。
 import { z } from "zod";
+import { PAPER_STATUSES, QUESTION_STATUSES } from "./constants.ts";
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "日期要写成 2026-10-12 这样");
 const httpUrl = z.string().regex(/^https?:\/\/\S+$/, "链接只能以 http:// 或 https:// 开头");
 const text = z.string().trim().min(1, "不能为空");
-
-export const PAPER_STATUSES = ["在读", "想读", "读完"] as const;
-export const QUESTION_STATUSES = ["想做", "待想", "已和导师讨论", "放弃"] as const;
 
 export const aboutSchema = z.strictObject({
   name: text,

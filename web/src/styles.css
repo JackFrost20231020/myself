@@ -15,6 +15,18 @@
   --spine-shade: rgba(30, 43, 82, 0.13);
   --spine-light: rgba(30, 43, 82, 0.02);
 
+  /* 书脊：几种压暗的纸色，配浅色字，对比度都在 4.5:1 以上 */
+  --book-fg: #f7f4ec;
+  --book-edge: rgba(0, 0, 0, 0.2);
+  --book-1: #2f4b7c;
+  --book-2: #2f6a63;
+  --book-3: #8a6020;
+  --book-4: #5f456f;
+  --book-5: #4f5866;
+  --book-6: #4f6430;
+  --book-7: #8e4234;
+  --book-8: #64553c;
+
   --f-hand: "Long Cang", "KaiTi", "STKaiti", "Kaiti SC", cursive;
   --f-sans: system-ui, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --f-serif: "Songti SC", "SimSun", "Noto Serif SC", serif;
@@ -550,6 +562,136 @@ h3 {
 .now-questions {
   padding-top: 24px;
   border-top: 1.5px dashed var(--rule);
+}
+
+/* ---------- 书架：一排书脊 ---------- */
+
+.hand-h small {
+  font-family: var(--f-sans);
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.spines {
+  display: grid;
+  /* 单列也要写 minmax(0, 1fr)，否则不换行的长标题会把这一列撑宽 */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+.book {
+  min-width: 0;
+}
+.book a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 2px 4px 4px 2px;
+  color: var(--book-fg);
+  text-decoration: none;
+  box-shadow: inset 5px 0 0 var(--book-edge);
+  transition: transform 0.2s ease;
+}
+.book a:hover {
+  transform: translateX(6px);
+}
+.book-1 a { background: var(--book-1); }
+.book-2 a { background: var(--book-2); }
+.book-3 a { background: var(--book-3); }
+.book-4 a { background: var(--book-4); }
+.book-5 a { background: var(--book-5); }
+.book-6 a { background: var(--book-6); }
+.book-7 a { background: var(--book-7); }
+.book-8 a { background: var(--book-8); }
+@media (min-width: 821px) {
+  .book:nth-child(4n + 1) { width: 97%; }
+  .book:nth-child(4n + 2) { width: 91%; }
+  .book:nth-child(4n + 3) { width: 100%; }
+  .book:nth-child(4n) { width: 88%; }
+}
+.book.is-reading a::after {
+  /* 在读的书夹着一根红色书签 */
+  content: "";
+  position: absolute;
+  top: -4px;
+  right: 22px;
+  width: 8px;
+  height: 46px;
+  background: var(--red);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+}
+.book.is-done a {
+  opacity: 0.75;
+}
+.spine-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--f-serif);
+  font-size: 13.5px;
+}
+.spine-meta {
+  flex: none;
+  max-width: 40%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.shelf-group + .shelf-group {
+  margin-top: 30px;
+}
+.papers {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.paper {
+  padding-left: 14px;
+  border-left: 3px solid var(--rule);
+  scroll-margin-top: 24px;
+}
+.paper-title {
+  margin: 0;
+  font-family: var(--f-serif);
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.paper-title a {
+  display: inline;
+  padding-block: 4px;
+  text-decoration-color: var(--rule);
+}
+.paper-title a:hover {
+  color: var(--red);
+}
+.paper-meta,
+.paper-note {
+  margin: 2px 0 0;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+
+/* 单列的列表都限制住列宽，长单词或长链接不会把页面撑宽 */
+.checks,
+.questions,
+.papers,
+.weeks,
+.facts {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 @media (prefers-reduced-motion: reduce) {
