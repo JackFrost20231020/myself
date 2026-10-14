@@ -9,7 +9,7 @@ describe("页面骨架", () => {
     expect(html).toContain('class="spread"');
     expect(html).toContain("JackFrost");
     expect(html).toContain("知识图谱 × 大模型智能体");
-    expect(html).toContain("10月14日");
+    expect(html).toContain('aria-labelledby="this-week"');
   });
 
   it("关于我页面显示全部信息和正文", () => {

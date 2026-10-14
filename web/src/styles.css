@@ -339,6 +339,219 @@ h3 {
   font-size: 16px;
 }
 
+/* ---------- 这一周：圈起来的周次、手画方框、红笔批注 ---------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.hand-h-sm {
+  margin-top: 30px;
+  font-size: 26px;
+}
+.week-title {
+  font-size: clamp(30px, 4vw, 40px);
+}
+.circled,
+.week-no {
+  position: relative;
+  display: inline-block;
+  margin-right: 0.45em;
+  padding-inline: 0.2em;
+}
+.circled::after {
+  content: "";
+  position: absolute;
+  inset: -6px -9px -3px -9px;
+  border: 2px solid var(--red);
+  border-radius: 50% 46% 52% 44% / 58% 50% 48% 54%;
+  transform: rotate(-3deg);
+  pointer-events: none;
+}
+.week-no {
+  color: var(--ink-2);
+}
+
+.checks {
+  display: grid;
+  gap: 14px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.check {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+}
+.check-box {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  margin-top: 5px;
+  border: 2px solid var(--ink);
+  border-radius: 3px 5px 2px 6px;
+  transform: rotate(-2deg);
+}
+.check:nth-child(3n + 2) .check-box {
+  border-radius: 5px 2px 6px 3px;
+  transform: rotate(1.5deg);
+}
+.check:nth-child(3n) .check-box {
+  border-radius: 2px 6px 3px 5px;
+  transform: rotate(-0.5deg);
+}
+.check-box svg {
+  position: absolute;
+  inset: -7px -9px -3px -3px;
+  overflow: visible;
+}
+.check-box path {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.check.is-done .check-text {
+  color: var(--ink-2);
+}
+
+.annotation {
+  margin: 12px 0 0 34px;
+  font-family: var(--f-hand);
+  font-size: 23px;
+  line-height: 1.2;
+  color: var(--red);
+  transform: rotate(-2deg);
+  transform-origin: left;
+}
+.tally {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1.5px dashed var(--rule);
+}
+.tally b {
+  font-family: var(--f-hand);
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 1;
+}
+.tally span {
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+.next-week {
+  margin: 22px 0 4px;
+  font-family: var(--f-hand);
+  font-size: 24px;
+  color: var(--ink-2);
+}
+.empty-note {
+  margin: 0 0 12px;
+  color: var(--ink-2);
+}
+
+/* ---------- 研究问题：盖了章的条目 ---------- */
+
+.questions {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.question {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 12px;
+}
+.stamp {
+  padding: 0 6px;
+  border: 1.5px solid currentColor;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  color: var(--ink-2);
+  transform: rotate(-2deg);
+}
+.question.is-want .stamp {
+  color: var(--red);
+}
+.question.is-dropped .question-text {
+  color: var(--ink-2);
+  text-decoration: line-through;
+}
+.question-note {
+  display: block;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+
+/* ---------- 在做什么：整个计划 ---------- */
+
+.sheet-wide {
+  max-width: 900px;
+}
+.lede {
+  max-width: 40em;
+  margin: 0 0 28px;
+  color: var(--ink-2);
+}
+.weeks {
+  display: grid;
+  gap: 34px;
+  margin: 0 0 40px;
+  padding: 0;
+  list-style: none;
+}
+.week {
+  scroll-margin-top: 24px;
+}
+.week-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+}
+.week-meta .page-date {
+  margin: 0;
+}
+.week-tense {
+  font-family: var(--f-hand);
+  font-size: 20px;
+  color: var(--ink-2);
+}
+.week.is-current .week-tense {
+  color: var(--red);
+}
+.week.is-past {
+  opacity: 0.72;
+}
+.week .week-title {
+  margin: 2px 0 0;
+  font-size: clamp(26px, 3.4vw, 32px);
+}
+.week-count {
+  margin: 10px 0 0;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+.now-questions {
+  padding-top: 24px;
+  border-top: 1.5px dashed var(--rule);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
